@@ -9,7 +9,7 @@ pipeline{
             stage('Checkout') {
         steps {
           // Get some code from a GitHub repository
-          git branch: 'main', url: 'https://github.com/QA-Instructor/lbg-vat-calculator.git'
+          git branch: 'main', url: 'https://github.com/QA-Instructor/lbg-pipeline-complete-1.git'
         }
     }
             stage('SonarQube Analysis') {
