@@ -86,7 +86,7 @@ pipeline{
                     script {
                         sshPublisher(publishers: [sshPublisherDesc(configName: 'targetDeploymentServer', 
                         transfers: [sshTransfer(cleanRemote: false, excludes: '', 
-                        execCommand: 'docker run --name deployed-vat-calc -d -p 8000:80 victorialloyd/vatcal:latest', 
+                        execCommand: 'docker run --name deployed-vat-calc -d -p 8000:80 victorialloyd/vat-cal:latest', 
                         execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, 
                         patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', 
                         sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, 
