@@ -7,12 +7,12 @@ pipeline{
     agent any
         stages {
             stage('Checkout Code') {
-        steps {
-          // Get some code from a GitHub repository
-          git branch: 'main', url: 'https://github.com/QA-Instructor/lbg-pipeline-complete-1.git'
-        }
-        }
-        stage('Install Dependencies') {
+                steps {
+                // Get some code from a GitHub repository
+                git branch: 'main', url: 'https://github.com/QA-Instructor/lbg-pipeline-complete-1.git'
+                }
+            }
+            stage('Install Dependencies') {
                 steps {
                 // Install the ReactJS dependencies
                 sh "npm install"
@@ -24,20 +24,19 @@ pipeline{
                 sh "npm test"
                 }
             }
-        stage('SonarQube Analysis') {
-            environment {
-                scannerHome = tool 'sonarqube'
-            }
+            stage('SonarQube Analysis') {
+                environment {
+                    scannerHome = tool 'sonarqube'
+                }
                 steps {
                     withSonarQubeEnv('sonar-qube-1') {        
                     sh "${scannerHome}/bin/sonar-scanner"
-                }
-                timeout(time: 10, unit: 'MINUTES'){
-                waitForQualityGate abortPipeline: true
+                    }
+                    timeout(time: 10, unit: 'MINUTES'){
+                    waitForQualityGate abortPipeline: true
+                    }
                 }
             }
-        }
-        
             stage ('Build Docker Image'){
                 steps{
                     script {
@@ -45,7 +44,6 @@ pipeline{
                     }
                 }
             }
-
             stage ("Push to Docker Hub"){
                 steps {
                     script {
@@ -94,7 +92,7 @@ pipeline{
                         verbose: false)])
                     }
                 }
-}
+            }
             stage ("Clean up unused images"){
                 steps {
                     script {
