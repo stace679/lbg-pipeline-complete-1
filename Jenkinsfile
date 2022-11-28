@@ -6,13 +6,25 @@ pipeline{
     }
     agent any
         stages {
-            stage('Checkout') {
+            stage('Checkout Code') {
         steps {
           // Get some code from a GitHub repository
           git branch: 'main', url: 'https://github.com/QA-Instructor/lbg-pipeline-complete-1.git'
         }
-    }
-            stage('SonarQube Analysis') {
+        }
+        stage('Install Dependencies') {
+                steps {
+                // Install the ReactJS dependencies
+                sh "npm install"
+                }
+            }
+            stage('Run Tests') {
+                steps {
+                // Run the ReactJS tests
+                sh "npm test"
+                }
+            }
+        stage('SonarQube Analysis') {
             environment {
                 scannerHome = tool 'sonarqube'
             }
@@ -25,18 +37,7 @@ pipeline{
                 }
             }
         }
-        stage('Install') {
-                steps {
-                // RInstall the ReactJS dependencies
-                sh "npm install"
-                }
-            }
-            stage('Test') {
-                steps {
-                // Run the ReactJS tests
-                sh "npm test"
-                }
-            }
+        
             stage ('Build Docker Image'){
                 steps{
                     script {
@@ -94,7 +95,7 @@ pipeline{
                     }
                 }
 }
-            stage ("Clean up"){
+            stage ("Clean up unused images"){
                 steps {
                     script {
                         sh 'docker image prune --all --force --filter "until=48h"'
